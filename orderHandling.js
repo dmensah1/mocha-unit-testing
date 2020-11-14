@@ -48,7 +48,7 @@ var getBalanceFactor = function (clientAccount) {
     return factor;
 }
 
-exports.accountStatus = function (clientAccount) {
+var accountStatus = function (clientAccount) {
     
     var factor1 = getAgeFactor(clientAccount);
     var factor2 = getBalanceFactor(clientAccount);
@@ -72,7 +72,7 @@ exports.accountStatus = function (clientAccount) {
     } 
 }
 
-exports.creditStatus = function (clientAccount,creditCheckMode) {
+var creditStatus = function (clientAccount,creditCheckMode) {
     var scoreThreshold;
 
     if (clientAccount.creditScore < 0 || clientAccount.creditScore > 100) {
@@ -94,7 +94,7 @@ exports.creditStatus = function (clientAccount,creditCheckMode) {
     }
 }
 
-exports.productStatus = function(product,inventory,inventoryThreshold) { 
+var productStatus = function(product,inventory,inventoryThreshold) { 
     var q;
     
     if (inventoryThreshold < 0 || inventoryThreshold > 1000 || 
@@ -148,3 +148,4 @@ exports.orderHandling = function(clientAccount ,product,inventory,inventoryThres
         return "pending";
     }
 }
+
