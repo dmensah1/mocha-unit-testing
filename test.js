@@ -449,5 +449,223 @@ describe('Strong Robust Equivalence Classes (SR)', function() {
 });
 
 describe('Boundary Value Testing (BV)', function() {
-  
+  let account = [
+    {
+      age: 17,
+      balance: -1,
+      creditScore: -1
+    }
+  ]
+  describe('Account Status Function (AS)', function() {
+    it('BV-AS1, invalid', function() {
+      assert.equal(fn.accountStatus(account[0]), 'invalid');
+    });
+    it('BV-AS2, invalid', function() {
+      account[0].age = 18;
+      account[0].balance = 0;
+      assert.equal(fn.accountStatus(account[0]), 'invalid');
+    });
+    it('BV-AS3, adverse', function() {
+      account[0].age = 19;
+      account[0].balance = 1;
+      assert.equal(fn.accountStatus(account[0]), 'adverse');
+    });
+    it('BV-AS4, adverse', function() {
+      account[0].age = 24;
+      account[0].balance = 99;
+      assert.equal(fn.accountStatus(account[0]), 'adverse');
+    });
+    it('BV-AS5, acceptable', function() {
+      account[0].age = 25;
+      account[0].balance = 100;
+      assert.equal(fn.accountStatus(account[0]), 'acceptable');
+    });
+    it('BV-AS6, acceptable', function() {
+      account[0].age = 26;
+      account[0].balance = 101;
+      assert.equal(fn.accountStatus(account[0]), 'acceptable');
+    });
+    it('BV-AS7, acceptable', function() {
+      account[0].age = 34;
+      account[0].balance = 499;
+      assert.equal(fn.accountStatus(account[0]), 'acceptable');
+    });
+    it('BV-AS8, acceptable', function() {
+      account[0].age = 35;
+      account[0].balance = 500;
+      assert.equal(fn.accountStatus(account[0]), 'acceptable');
+    });
+    it('BV-AS9, acceptable', function() {
+      account[0].age = 36;
+      account[0].balance = 501;
+      assert.equal(fn.accountStatus(account[0]), 'acceptable');
+    });
+    it('BV-AS10, acceptable', function() {
+      account[0].age = 44;
+      account[0].balance = 999;
+      assert.equal(fn.accountStatus(account[0]), 'acceptable');
+    });
+    it('BV-AS11, excellent', function() {
+      account[0].age = 45;
+      account[0].balance = 1000;
+      assert.equal(fn.accountStatus(account[0]), 'excellent');
+    });
+    it('BV-AS12, excellent', function() {
+      account[0].age = 46;
+      account[0].balance = 1001;
+      assert.equal(fn.accountStatus(account[0]), 'excellent');
+    });
+    it('BV-AS13, excellent', function() {
+      account[0].age = 64;
+      account[0].balance = 2999;
+      assert.equal(fn.accountStatus(account[0]), 'excellent');
+    });
+    it('BV-AS14, excellent', function() {
+      account[0].age = 65;
+      account[0].balance = 3000;
+      assert.equal(fn.accountStatus(account[0]), 'excellent');
+    });
+    it('BV-AS15, excellent', function() {
+      account[0].age = 66;
+      account[0].balance = 3001;
+      assert.equal(fn.accountStatus(account[0]), 'excellent');
+    });
+    it('BV-AS16, excellent', function() {
+      account[0].age = 94;
+      account[0].balance = 4999;
+      assert.equal(fn.accountStatus(account[0]), 'excellent');
+    });
+    it('BV-AS17, invalid', function() {
+      account[0].age = 95;
+      account[0].balance = 5000;
+      assert.equal(fn.accountStatus(account[0]), 'invalid');
+    });
+    it('BV-AS18, invalid', function() {
+      account[0].age = 96;
+      account[0].balance = 5001;
+      assert.equal(fn.accountStatus(account[0]), 'invalid');
+    });
+  });
+
+  describe('Credit Status Function (CS)', function() {
+    it('BV-CS1, invalid', function() {
+      assert.equal(fn.creditStatus(account[0], "strict"), 'invalid');
+    });
+    it('BV-CS2, adverse', function() {
+      account[0].creditScore = 0;
+      assert.equal(fn.creditStatus(account[0], "strict"), 'adverse');
+    });
+    it('BV-CS3, adverse', function() {
+      account[0].creditScore = 1;
+      assert.equal(fn.creditStatus(account[0], "strict"), 'adverse');
+    });
+    it('BV-CS4, adverse', function() {
+      account[0].creditScore = 64;
+      assert.equal(fn.creditStatus(account[0], "strict"), 'adverse');
+    });
+    it('BV-CS5, good', function() {
+      account[0].creditScore = 65;
+      assert.equal(fn.creditStatus(account[0], "strict"), 'good');
+    });
+    it('BV-CS6, good', function() {
+      account[0].creditScore = 66;
+      assert.equal(fn.creditStatus(account[0], "strict"), 'good');
+    });
+    it('BV-CS7, good', function() {
+      account[0].creditScore = 99;
+      assert.equal(fn.creditStatus(account[0], "strict"), 'good');
+    });
+    it('BV-CS8, good', function() {
+      account[0].creditScore = 100;
+      assert.equal(fn.creditStatus(account[0], "strict"), 'good');
+    });
+    it('BV-CS9, invalid', function() {
+      account[0].creditScore = 101;
+      assert.equal(fn.creditStatus(account[0], "strict"), 'invalid');
+    });
+    it('BV-CS10, invalid', function() {
+      account[0].creditScore = -1;
+      assert.equal(fn.creditStatus(account[0], "default"), 'invalid');
+    });
+    it('BV-CS11, adverse', function() {
+      account[0].creditScore = 0;
+      assert.equal(fn.creditStatus(account[0], "default"), 'adverse');
+    });
+    it('BV-CS12, adverse', function() {
+      account[0].creditScore = 1;
+      assert.equal(fn.creditStatus(account[0], "default"), 'adverse');
+    });
+    it('BV-CS13, adverse', function() {
+      account[0].creditScore = 74;
+      assert.equal(fn.creditStatus(account[0], "default"), 'adverse');
+    });
+    it('BV-CS14, good', function() {
+      account[0].creditScore = 75;
+      assert.equal(fn.creditStatus(account[0], "default"), 'good');
+    });
+    it('BV-CS15, good', function() {
+      account[0].creditScore = 76;
+      assert.equal(fn.creditStatus(account[0], "default"), 'good');
+    });
+    it('BV-CS16, good', function() {
+      account[0].creditScore = 99;
+      assert.equal(fn.creditStatus(account[0], "default"), 'good');
+    });
+    it('BV-CS17, good', function() {
+      account[0].creditScore = 100;
+      assert.equal(fn.creditStatus(account[0], "default"), 'good');
+    });
+    it('BV-CS18, invalid', function() {
+      account[0].creditScore = 101;
+      assert.equal(fn.creditStatus(account[0], "default"), 'invalid');
+    });
+
+  });
+
+  describe('Product Status Function (PS)', function() {
+    it('BV-PS1, invalid', function() {
+      inventory[0].quantity = 15;
+      assert.equal(fn.productStatus('shoes', inventory, -1), 'invalid');
+    });
+    it('BV-PS2, invalid', function() {
+      inventory[0].quantity = 5;
+      assert.equal(fn.productStatus('shoes', inventory, 1200), 'invalid');
+    });
+    it('BV-PS3, invalid', function() {
+      inventory[0].quantity = -1;
+      assert.equal(fn.productStatus('shoes', inventory, 50), 'invalid');
+    });
+    it('BV-PS4, soldout', function() {
+      inventory[0].quantity = 0;
+      assert.equal(fn.productStatus('shoes', inventory, 50), 'soldout');
+    });
+    it('BV-PS5, limited', function() {
+      inventory[0].quantity = 1;
+      assert.equal(fn.productStatus('shoes', inventory, 50), 'limited');
+    });
+    it('BV-PS6, limited', function() {
+      inventory[0].quantity = 49;
+      assert.equal(fn.productStatus('shoes', inventory, 50), 'limited');
+    });
+    it('BV-PS7, available', function() {
+      inventory[0].quantity = 50;
+      assert.equal(fn.productStatus('shoes', inventory, 50), 'available');
+    });
+    it('BV-PS8, available', function() {
+      inventory[0].quantity = 51;
+      assert.equal(fn.productStatus('shoes', inventory, 50), 'available');
+    });
+    it('BV-PS9, available', function() {
+      inventory[0].quantity = 999;
+      assert.equal(fn.productStatus('shoes', inventory, 50), 'available');
+    });
+    it('BV-PS10, available', function() {
+      inventory[0].quantity = 1000;
+      assert.equal(fn.productStatus('shoes', inventory, 50), 'available');
+    });
+    it('BV-PS11, invalid', function() {
+      inventory[0].quantity = 1001;
+      assert.equal(fn.productStatus('shoes', inventory, 50), 'invalid');
+    });
+  });
 });
