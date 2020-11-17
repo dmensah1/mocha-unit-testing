@@ -669,3 +669,141 @@ describe('Boundary Value Testing (BV)', function() {
     });
   });
 });
+
+describe('Decision Table Testing (DT)', function() {
+  let account2 = [
+    {
+      age: 17,
+      balance: -1,
+      creditScore: -1
+    }
+  ]
+  describe('Account Status Function (AS)', function() {
+    it('DT-AS1, invalid', function() {
+      assert.equal(fn.accountStatus(account2[0]), 'invalid');
+    });
+    it('DT-AS2, invalid', function() {
+      assert.equal(fn.accountStatus(account2[0]), 'invalid');
+    });
+    it('DT-AS3, adverse', function() {
+      account2[0].age = 20;
+      account2[0].balance = 50;
+      assert.equal(fn.accountStatus(account2[0]), 'adverse');
+    });
+    it('DT-AS4, acceptable', function() {
+      account2[0].age = 30;
+      account2[0].balance = 250;
+      assert.equal(fn.accountStatus(account2[0]), 'acceptable');
+    });
+    it('DT-AS5, good', function() {
+      account2[0].age = 20;
+      account2[0].balance = 2000;
+      assert.equal(fn.accountStatus(account2[0]), 'good');
+    });
+    it('DT-AS6, excellent', function() {
+      account2[0].age = 50;
+      account2[0].balance = 2000;
+      assert.equal(fn.accountStatus(account2[0]), 'excellent');
+    });
+    it('DT-AS7, excellent', function() {
+      account2[0].age = 70;
+      account2[0].balance = 4000;
+      assert.equal(fn.accountStatus(account2[0]), 'excellent');
+    });
+  });
+
+  describe('Credit Status Function (CS)', function() {
+    it('DT-CS1, invalid', function() {
+      assert.equal(fn.creditStatus(account2[0], "strict"), 'invalid');
+    });
+    it('DT-CS2, adverse', function() {
+      account2[0].creditScore = 30;
+      assert.equal(fn.creditStatus(account2[0], "strict"), 'adverse');
+    });
+    it('DT-CS3, good', function() {
+      account2[0].creditScore = 80;
+      assert.equal(fn.creditStatus(account2[0], "strict"), 'good');
+    });
+    it('DT-CS4, invalid', function() {
+      account2[0].creditScore = 105;
+      assert.equal(fn.creditStatus(account2[0], "default"), 'invalid');
+    });
+    it('DT-CS5, adverse', function() {
+      account2[0].creditScore = 30;
+      assert.equal(fn.creditStatus(account2[0], "default"), 'adverse');
+    });
+    it('DT-CS6, good', function() {
+      account2[0].creditScore = 90;
+      assert.equal(fn.creditStatus(account2[0], "default"), 'good');
+    });
+  });
+
+  describe('Product Status Function (PS)', function() {
+    it('DT-PS1, soldout', function() {
+      inventory[0].quantity = 0;
+      assert.equal(fn.productStatus('shoes', inventory, 50), 'soldout');
+    });
+    it('DT-PS2, limited', function() {
+      inventory[0].quantity = 20;
+      assert.equal(fn.productStatus('shoes', inventory, 50), 'limited');
+    });
+    it('DT-PS3, available', function() {
+      inventory[0].quantity = 70;
+      assert.equal(fn.productStatus('shoes', inventory, 50), 'available');
+    });
+  });
+
+  describe('Order Status Function (OS)', function() {
+    it('DT-OH1, rejected', function() {
+      account2[0].age = 15;
+      assert.equal(fn2.orderHandling(account2[0], "shoes", inventory, 50, "strict"), 'rejected');
+    });
+    it('DT-OH2, rejected', function() {
+      inventory[0].quantity = 0;
+      account2[0].creditScore = 30;
+      account2[0].age = 30;
+      account2[0].balance = 250;
+      assert.equal(fn2.orderHandling(account2[0], "shoes", inventory, 50, "strict"), 'rejected');
+    });
+    it('DT-OH3, rejected', function() {
+      account2[0].age = 30;
+      account2[0].balance = 250;
+      account2[0].creditScore = 30;
+      inventory[0].quantity = 30;
+      assert.equal(fn2.orderHandling(account2[0], "shoes", inventory, 50, "strict"), 'rejected');
+    });
+    it('DT-OH4, rejected', function() {
+      account2[0].age = 20;
+      account2[0].balance = 50;
+      account2[0].creditScore = 80;
+      inventory[0].quantity = 0;
+      assert.equal(fn2.orderHandling(account2[0], "shoes", inventory, 50, "strict"), 'rejected');
+    });
+    it('DT-OH5, rejected', function() {
+      account2[0].creditScore = -1;
+      assert.equal(fn2.orderHandling(account2[0], "shoes", inventory, 50, "strict"), 'rejected');
+    });
+    it('DT-OH6, underReview', function() {
+      account2[0].age = 20;
+      account2[0].balance = 2000;
+      account2[0].creditScore = 30;
+      assert.equal(fn2.orderHandling(account2[0], "shoes", inventory, 50, "strict"), 'underReview');
+    });
+    it('DT-OH7, pending', function() {
+      account2[0].age = 30;
+      account2[0].balance = 250;
+      account2[0].creditScore = 80;
+      inventory[0].quantity = 30;
+      assert.equal(fn2.orderHandling(account2[0], "shoes", inventory, 50, "strict"), 'pending');
+    });
+    it('DT-OH8, accepted', function() {
+      account2[0].age = 50;
+      account2[0].balance = 2000;
+      assert.equal(fn2.orderHandling(account2[0], "shoes", inventory, 50, "strict"), 'accepted');
+    });
+    
+  
+  
+  });
+
+});
